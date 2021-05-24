@@ -34,7 +34,7 @@ libES5.foreach(arr, (item) => console.log(item + 0.2));
 
 // chain & value example
 console.log(`chain [es5]:`);
-console.log(libES5.chain([1, 2, 3, 4, 9, 11]).take(2).skip(1).value());
+console.log(libES5.chain([1, 2, 3, 4, 9, 11]).take(4).skip(1).value());
 
 // ES6 type
 
@@ -69,4 +69,12 @@ libES6.foreach(arr, (item) => console.log(item + 0.2));
 
 // chain & value example
 console.log(`chain [es6]:`);
-console.log(libES6.chain(arr).take(2).skip(1).value());
+console.log(
+  libES6
+    .chain(arr)
+    .take(6)
+    .skip(1)
+    .filter((item) => item < -3)
+    .reduce((res, item) => (res *= item), 1)
+    .value()
+);

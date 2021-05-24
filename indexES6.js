@@ -1,65 +1,64 @@
 class ArrayLibrary {
-  constructor(array) {
-    this.array = array;
-  }
+  constructor() {}
 
   take(array, n) {
-    if (n === undefined) {
-      [array, n] = [this.array, array];
-      array.slice(0, n);
-      return this;
-    }
     return array.slice(0, n);
   }
 
   skip(array, n) {
-    if (n === undefined) {
-      [array, n] = [this.array, array];
-      array.slice(n);
-      return this;
-    }
     return array.slice(n);
   }
 
   map(array, callback) {
-    if (callback === undefined) {
-      [array, callback] = [this.array, array];
-      array.map(callback);
-      return this;
-    }
     return array.map(callback);
   }
 
   reduce(array, callback, initialValue) {
-    if (callback === undefined) {
-      [array, callback, initialValue] = [this.array, array, callback];
-      array.reduce(callback, initialValue);
-      return this;
-    }
     return array.reduce(callback, initialValue);
   }
 
   filter(array, callback) {
-    if (callback === undefined) {
-      [array, callback] = [this.array, array];
-      array.filter(callback);
-      return this;
-    }
     return array.filter(callback);
   }
 
   foreach(array, callback) {
-    if (callback === undefined) {
-      [array, callback] = [this.array, array];
-      array.forEach(callback);
-      return this;
-    }
     return array.forEach(callback);
   }
 
   chain(array) {
-    this.array = array;
-    return new ArrayLibrary(array);
+    const ctx = this;
+    return {
+      array: array,
+      take: function (n) {
+        array = ctx.take(array, n);
+        return this;
+      },
+      skip: function (n) {
+        array = ctx.skip(array, n);
+        return this;
+      },
+      map: function (callback) {
+        array = ctx.map(array, callback);
+        return this;
+      },
+      reduce: function (callback, initialValue) {
+        // ?
+        array = ctx.reduce(array, callback, initialValue);
+        return this;
+      },
+      filter: function (callback) {
+        array = ctx.filter(array, callback);
+        return this;
+      },
+      foreach: function (callback) {
+        ctx.forEach(array, callback);
+        return this;
+      },
+      value: function () {
+        return array;
+      },
+    };
+    // return new ArrayLibrary(array);
   }
 
   value() {
